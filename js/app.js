@@ -74,8 +74,9 @@ const fetchToolsDetails = (id) => {
 // show modal:
 
 const showToolsDetails = dataDetails => {
+    console.log(dataDetails.data.accuracy.score * 100 + '%');
     const { description, pricing,
-        features, integrations, image_link, tool_name, input_output_examples } = dataDetails.data;
+        features, integrations, image_link, tool_name, input_output_examples, accuracy } = dataDetails.data;
     document.getElementById('modal-body').innerHTML =
         `
         <div class="modal-box w-11/12 max-w-6xl relative">
@@ -109,7 +110,11 @@ const showToolsDetails = dataDetails => {
                     </div>
                 </div>
                 <div id="right-section" class="bg-white w-full h-full border-2 rounded-lg p-6">
-                    <img src="${image_link[0]}" alt="" class="rounded-xl w-full">
+                    <div class="relative">
+                        <img src="${image_link[0]}" alt="" class="rounded-xl w-full">
+                        <p class="absolute top-2 right-2 bg-red-600 font-bold text-white px-8 py-2 rounded-lg ${accuracy && accuracy.score ? '' : 'hidden'}">
+                        ${accuracy && accuracy.score ? accuracy.score * 100 + '% accuracy' : 'No Data Found'}</p>
+                    </div>
                     <h2 class="text-center font-bold mt-5 mb-3">${input_output_examples && input_output_examples[0] ? input_output_examples[0].input : 'No Data Found'}</h2>
                     <p class="text-center mb-3">${input_output_examples && input_output_examples[0] ? input_output_examples[0].output : 'No Data Found'}</p>
                 </div>
