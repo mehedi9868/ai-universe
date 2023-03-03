@@ -1,8 +1,7 @@
 //spinner start:
 const spinnerBtn = document.getElementById('btn-spinner');
 spinnerBtn.classList.remove('hidden');
-
-
+//load data:
 const fetchAllTools = (dataLimit) => {
     const url = 'https://openapi.programming-hero.com/api/ai/tools';
     fetch(url)
@@ -10,13 +9,13 @@ const fetchAllTools = (dataLimit) => {
         .then(data => showTools(data?.data?.tools, dataLimit));
 }
 
-
 //loop and display:
 const showTools = (receivedData, dataLimit) => {
     const cardContainer = document.getElementById('card-container');
     const seeMoreBtn = document.getElementById('btn-see-more');
+    cardContainer.innerHTML = '';
     // show six card at first:
-    if (dataLimit && receivedData.length > 6) {
+    if (dataLimit >= 6) {
         receivedData = receivedData.slice(0, 6);
         seeMoreBtn.classList.remove('hidden');
     } else {
@@ -57,11 +56,16 @@ const showTools = (receivedData, dataLimit) => {
         spinnerBtn.classList.add('hidden');
 
     });
+
+    // sort all data by Date:
+    document.getElementById('btn-sort').addEventListener('click', function () {
+        const sortedArr = receivedData.sort((a, b) => new Date(b.published_in) - new Date(a.published_in));
+        showTools(sortedArr, sortedArr.length);
+    });
 }
 
 // six data only:
 fetchAllTools(6);
-
 
 //see more button show all cards:
 document.getElementById('btn-see-more').addEventListener('click', function () {
@@ -72,7 +76,6 @@ document.getElementById('btn-see-more').addEventListener('click', function () {
 // load dynamic API:
 const fetchToolsDetails = (id) => {
     const url = `https://openapi.programming-hero.com/api/ai/tool/${id}`;
-    console.log(url);
     fetch(url)
         .then(res => res.json())
         .then(data => showToolsDetails(data))
@@ -81,7 +84,6 @@ const fetchToolsDetails = (id) => {
 // show modal:
 
 const showToolsDetails = dataDetails => {
-    console.log(dataDetails.data.accuracy.score * 100 + '%');
     const { description, pricing,
         features, integrations, image_link, tool_name, input_output_examples, accuracy } = dataDetails.data;
     document.getElementById('modal-body').innerHTML =
