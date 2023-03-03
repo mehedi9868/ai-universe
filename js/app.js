@@ -1,3 +1,8 @@
+//spinner start:
+const spinnerBtn = document.getElementById('btn-spinner');
+spinnerBtn.classList.remove('hidden');
+
+
 const fetchAllTools = (dataLimit) => {
     const url = 'https://openapi.programming-hero.com/api/ai/tools';
     fetch(url)
@@ -10,7 +15,6 @@ const fetchAllTools = (dataLimit) => {
 const showTools = (receivedData, dataLimit) => {
     const cardContainer = document.getElementById('card-container');
     const seeMoreBtn = document.getElementById('btn-see-more');
-
     // show six card at first:
     if (dataLimit && receivedData.length > 6) {
         receivedData = receivedData.slice(0, 6);
@@ -49,9 +53,11 @@ const showTools = (receivedData, dataLimit) => {
         </div>
     </div>`
 
+        //spinner end:
+        spinnerBtn.classList.add('hidden');
+
     });
 }
-
 
 // six data only:
 fetchAllTools(6);
