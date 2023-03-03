@@ -30,15 +30,15 @@ const showTools = (receivedData, dataLimit) => {
         <div class="card-body">
             <h2 class="card-title">Features</h2>
             <ol class="list-decimal list-inside">
-                <li>${singleTool.features[0]}</li>
-                <li>${singleTool.features[1]}</li>
-                <li>${singleTool.features[2]}</li>
+                <li>${singleTool && singleTool.features[0] ? singleTool.features[0] : 'No Data Found'}</li>
+                <li>${singleTool && singleTool.features[1] ? singleTool.features[1] : 'No Data Found'}</li>
+                <li>${singleTool && singleTool.features[2] ? singleTool.features[2] : 'No Data Found'}</li>
             </ol>
         <hr class="my-4">
         <div class="flex justify-between items-center">
             <div>
-                <h2 class="card-title mb-3">${singleTool.name}</h2>
-                <p><i class="fa-regular fa-calendar-days"></i> ${singleTool.published_in}</p>
+                <h2 class="card-title mb-3">${singleTool && singleTool.name ? singleTool.name : 'No Data Found'}</h2>
+                <p><i class="fa-regular fa-calendar-days"></i> ${singleTool && singleTool.published_in ? singleTool.published_in : 'No Data Found'}</p>
             </div>
             <button class="" onclick="fetchToolsDetails('${singleTool.id}')">
                 <label for="modal">
@@ -74,8 +74,6 @@ const fetchToolsDetails = (id) => {
 // show modal:
 
 const showToolsDetails = dataDetails => {
-    console.log(dataDetails.data);
-    console.log(dataDetails.data.input_output_examples);
     const { description, pricing,
         features, integrations, image_link, tool_name, input_output_examples } = dataDetails.data;
     document.getElementById('modal-body').innerHTML =
@@ -86,72 +84,36 @@ const showToolsDetails = dataDetails => {
                 <div id="left-section" class="bg-red-50 w-full border-2 border-red-400 rounded-lg p-6">
                     <h2 class="font-bold mb-5">${description}</h2>
                     <div class="flex flex-col sm:flex-row sm:justify-between gap-3">
-                        <h2 class="bg-slate-50 p-4 sm:p-7 rounded-xl text-green-600 font-bold text-center sm:text-left">${pricing[0].price} <br/> ${pricing[0].plan}
+                        <h2 class="bg-slate-50 p-4 sm:p-7 rounded-xl text-green-600 font-bold text-center sm:text-left">${pricing && pricing[0] ? pricing[0].price : 'Free of Cost'} <br/> ${pricing[0].plan}
                         </h2>
-                        <h2 class="bg-slate-50 p-4 sm:p-7 rounded-xl text-orange-600 font-bold text-center sm:text-left">${pricing[1].price} <br/> ${pricing[1].plan}</h2>
-                        <h2 class="bg-slate-50 p-4 sm:p-7 rounded-xl text-red-600 font-bold text-center sm:text-left">${pricing[2].price} <br/> ${pricing[2].plan}</h2>
+                        <h2 class="bg-slate-50 p-4 sm:p-7 rounded-xl text-orange-400 font-bold text-center sm:text-left">${pricing && pricing[1] ? pricing[1].price : 'Free of Cost'} <br/> ${pricing[1].plan}</h2>
+                        <h2 class="bg-slate-50 p-4 sm:p-7 rounded-xl text-red-600 font-bold text-center sm:text-left">${pricing && pricing[2] ? pricing[2].price : 'Free of Cost'} <br/> ${pricing[2].plan}</h2>
                     </div>
                     <div class="flex justify-between">
                         <div>
                             <h2 class="font-bold my-5">Features</h2>
                             <ul class="list-disc list-inside">
-                                <li>${features[1].feature_name}</li>
-                                <li>${features[2].feature_name}</li>
-                                <li>${features[3].feature_name}</li>
+                                <li>${features && features[1] ? features[1].feature_name : 'No Data Found'}</li>
+                                <li>${features && features[2] ? features[2].feature_name : 'No Data Found'}</li>
+                                <li>${features && features[3] ? features[3].feature_name : 'No Data Found'}</li>
                             </ul>
                         </div>
                         <div>
                             <h2 class="font-bold my-5">Integrations</h2>
                             <ul class="list-disc list-inside">
-                                <li>${integrations[0]}</li>
-                                <li>${integrations[1]}</li>
-                                <li>${integrations[2]}</li>   
+                                <li>${integrations && integrations[0] ? integrations[0] : 'No Data Found'}</li>
+                                <li>${integrations && integrations[1] ? integrations[1] : 'No Data Found'}</li>
+                                <li>${integrations && integrations[2] ? integrations[2] : 'No Data Found'}</li>   
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div id="right-section" class="bg-white w-full h-full border-2 rounded-lg p-6">
                     <img src="${image_link[0]}" alt="" class="rounded-xl w-full">
-                    <h2 class="text-center font-bold mt-5 mb-3">${input_output_examples[0].input}</h2>
-                    <p class="text-center mb-3">${input_output_examples[0].output}</p>
+                    <h2 class="text-center font-bold mt-5 mb-3">${input_output_examples && input_output_examples[0] ? input_output_examples[0].input : 'No Data Found'}</h2>
+                    <p class="text-center mb-3">${input_output_examples && input_output_examples[0] ? input_output_examples[0].output : 'No Data Found'}</p>
                 </div>
             </div>
         </div>
     `;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const showNewsDetails = newsDetails => {
-//     const { title, image_url, details, others_info } = newsDetails;
-//     document.getElementById('exampleModalLabel').innerText = title;
-//     document.getElementById('modal-body').innerHTML = `
-//     <span class="badge text-bg-danger">${others_info.is_trending ? "Trending" : ""}</span>
-//     <img src="${image_url}" class="img-fluid mt-1" alt="...">
-//         <div>
-//             <p class="card-text mt-2">${details}</p>
-//         </div>
-//     `;
-// }
-
-
-
-
-
-
-
-
-
