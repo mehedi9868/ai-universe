@@ -75,31 +75,34 @@ const fetchToolsDetails = (id) => {
 
 const showToolsDetails = dataDetails => {
     console.log(dataDetails.data);
-    const { features, integrations, image_link, tool_name } = dataDetails.data;
+    console.log(dataDetails.data.input_output_examples);
+    const { description, pricing,
+        features, integrations, image_link, tool_name, input_output_examples } = dataDetails.data;
     document.getElementById('modal-body').innerHTML =
         `
-        <div class="modal-box relative">
-            <label for="modal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-            <div class="flex justify-between gap-6 p-6">
-                <div id="left-section" class="bg-green-100 w-full">
-                    <h2>${tool_name}</h2>
-                    <div class="flex justify-between">
-                        <h2>1</h2>
-                        <h2>2</h2>
-                        <h2>3</h2>
+        <div class="modal-box w-11/12 max-w-6xl relative">
+            <label for="modal" class="btn btn-sm btn-circle bg-red-600 border-none absolute right-2 top-2 hover:bg-red-400">✕</label>
+            <div class="flex justify-between gap-6 p-10">
+                <div id="left-section" class="bg-red-50 w-full border-2 border-red-400 rounded-lg p-6">
+                    <h2 class="font-bold mb-5">${description}</h2>
+                    <div class="flex justify-between gap-3">
+                        <h2 class="bg-slate-50 p-7 rounded-xl text-green-600 font-bold">${pricing[0].price} <br/> ${pricing[0].plan}
+                        </h2>
+                        <h2 class="bg-slate-50 p-7 rounded-xl text-orange-600 font-bold">${pricing[1].price} <br/> ${pricing[1].plan}</h2>
+                        <h2 class="bg-slate-50 p-7 rounded-xl text-red-600 font-bold">${pricing[2].price} <br/> ${pricing[2].plan}</h2>
                     </div>
                     <div class="flex justify-between">
                         <div>
-                            <h2></h2>
-                            <ul class="list-decimal list-inside">
+                            <h2 class="font-bold my-5">Features</h2>
+                            <ul class="list-disc list-inside">
                                 <li>${features[1].feature_name}</li>
                                 <li>${features[2].feature_name}</li>
                                 <li>${features[3].feature_name}</li>
                             </ul>
                         </div>
                         <div>
-                            <h2></h2>
-                            <ul class="list-decimal list-inside">
+                            <h2 class="font-bold my-5">Integrations</h2>
+                            <ul class="list-disc list-inside">
                                 <li>${integrations[0]}</li>
                                 <li>${integrations[1]}</li>
                                 <li>${integrations[2]}</li>   
@@ -107,10 +110,10 @@ const showToolsDetails = dataDetails => {
                         </div>
                     </div>
                 </div>
-                <div id="right-section" class="bg-red-100 w-full">
-                    <img src="${image_link[0]}" alt="">
-                    <h2>text</h2>
-                    <p>paragraph</p>
+                <div id="right-section" class="bg-white w-full h-full border-2 rounded-lg p-6">
+                    <img src="${image_link[0]}" alt="" class="rounded-xl w-full">
+                    <h2 class="text-center font-bold mt-5 mb-3">${input_output_examples[0].input}</h2>
+                    <p class="text-center mb-3">${input_output_examples[0].output}</p>
                 </div>
             </div>
         </div>
