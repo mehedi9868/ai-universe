@@ -2,28 +2,30 @@
 const spinnerBtn = document.getElementById('btn-spinner');
 spinnerBtn.classList.remove('hidden');
 //load data:
-const fetchAllTools = (dataLimit) => {
+let dataArr = [];
+let dataLimit = 6;
+const fetchAllTools = () => {
     const url = 'https://openapi.programming-hero.com/api/ai/tools';
     fetch(url)
         .then(res => res.json())
-        .then(data => showTools(data?.data?.tools, dataLimit));
+        .then(data => {
+            dataArr = data.data.tools;
+            showTools()
+
+        });
 }
 
 //loop and display:
-const showTools = (receivedData, dataLimit) => {
+const showTools = () => {
     const cardContainer = document.getElementById('card-container');
     const seeMoreBtn = document.getElementById('btn-see-more');
     cardContainer.innerHTML = '';
+
     // show six card at first:
-    if (dataLimit >= 6) {
-        receivedData = receivedData.slice(0, 6);
-        seeMoreBtn.classList.remove('hidden');
-    } else {
-        seeMoreBtn.classList.add('hidden');
-        cardContainer.innerHTML = ''; // remove all data from display
-    }
+
+    let slicedData = dataArr.slice(0, dataLimit);
     // display cards:
-    receivedData.forEach(singleTool => {
+    slicedData.forEach(singleTool => {
         cardContainer.innerHTML += `
     <div class="card w-full border">
         <figure class="px-10 pt-10">
@@ -50,26 +52,33 @@ const showTools = (receivedData, dataLimit) => {
             </button>
             
         </div>
-    </div>`
+    </div>`;
 
         //spinner end:
         spinnerBtn.classList.add('hidden');
 
     });
-
-    // sort all data by Date:
-    document.getElementById('btn-sort').addEventListener('click', function () {
-        const sortedArr = receivedData.sort((a, b) => new Date(b.published_in) - new Date(a.published_in));
-        showTools(sortedArr, sortedArr.length);
-    });
+    // show/hide see-more-btn
+    if (dataLimit >= dataArr.length) {
+        seeMoreBtn.classList.add('hidden');
+    } else {
+        seeMoreBtn.classList.remove('hidden');
+    }
 }
 
-// six data only:
-fetchAllTools(6);
+// sort all data by Date:
+const sortBtn = document.getElementById('btn-sort')
+sortBtn.addEventListener('click', function () {
+    dataArr.sort((a, b) => new Date(b.published_in) - new Date(a.published_in));
+    dataLimit = 6;
+    showTools();
+});
 
-//see more button show all cards:
-document.getElementById('btn-see-more').addEventListener('click', function () {
-    fetchAllTools();
+// see more button show all cards:
+const btnSeeMore = document.getElementById('btn-see-more')
+btnSeeMore.addEventListener('click', function () {
+    dataLimit = dataArr.length;
+    showTools();
 });
 
 // for modal:
